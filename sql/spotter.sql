@@ -13,8 +13,7 @@ CREATE TABLE IF NOT EXISTS workout(
     id bigint NOT NULL,
     workout_date date NOT NULL,
     workout_length SMALLINT DEFAULT NULL,
-    exercise_id bigint NOT NULL,
-    account_id bigint NOT NULL
+    exercise_id bigint NOT NULL
 );
 
 ALTER TABLE workout ADD PRIMARY KEY (id);
@@ -22,9 +21,6 @@ ALTER TABLE workout MODIFY id bigint NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE workout ADD CONSTRAINT fk_workout_exercise_id 
 FOREIGN KEY (exercise_id) REFERENCES exercise(id);
-
-ALTER TABLE workout ADD CONSTRAINT fk_workout_account_id 
-FOREIGN KEY (account_id) REFERENCES account(id);
 
 CREATE TABLE IF NOT EXISTS workout_set(
     id bigint NOT NULL,
