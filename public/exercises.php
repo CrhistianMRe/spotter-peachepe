@@ -11,7 +11,7 @@ $stmt = $pdo->query("
 
 $exercises = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-require-once '../private/templates/header.php';
+require_once '../private/templates/header.php';
 
 ?>
 
