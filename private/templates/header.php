@@ -19,6 +19,8 @@
 
     <a href="exercises.php">Exercises</a>
 
+    <a href="workouts.php">Workouts</a>
+
 </nav>
 
 <hr>
