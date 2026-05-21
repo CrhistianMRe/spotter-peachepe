@@ -92,4 +92,4 @@ require_once '../private/templates/header.php';
 
 </form>
 
-require_once '../private/templates/footer.php'; ?>
+<?php require_once '../private/templates/footer.php'; ?>

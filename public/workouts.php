@@ -36,6 +36,8 @@ require_once '../private/templates/header.php';
         <th>Date</th>
         <th>Exercise</th>
         <th>Length (minutes)</th>
+        <th>Sets</th>
+        <th>Actions</th>
     </tr>
 
     <?php foreach ($workouts as $workout): ?>
@@ -56,6 +58,26 @@ require_once '../private/templates/header.php';
 
         <td>
             <?= escape($workout['workout_length']) ?>
+        </td>
+
+        <td>
+
+            <a href="workout_sets.php?workout_id=<?= $workout['id'] ?>">
+
+                View Sets
+
+            </a>
+
+        </td>
+
+        <td>
+
+            <a href="workout_delete.php?id=<?= $workout['id'] ?>">
+
+                Delete
+
+            </a>
+
         </td>
 
     </tr>
