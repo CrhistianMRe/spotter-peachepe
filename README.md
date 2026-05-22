@@ -4,6 +4,14 @@ Spotter is a lightweight workout logging web application developed in PHP with a
 
 The project is designed to run on a Raspberry Pi Zero 2W using Apache and PHP without server-side or client-side frameworks.
 
+<details>
+<summary>🐬 MariaDB</summary>
+
+![DB ER-diagram](https://github.com/CrhistianMRe/spotter-peachepe/raw/docs/db-diagram-mamita/MamitaDebe.svg)
+
+</details>
+
+
 ## Project Structure
 
 .
@@ -86,4 +94,8 @@ Contains:
 * Keep backend PHP logic inside `private/`
 * Keep browser-accessible pages inside `public/`
 * Use prepared statements for database queries
+
+### (PUTOELQUELOLEA) 
+1. FALTA ENDPOINT DE **GET ALL BODY PARTS LIST** 
+2. FALTA ENDPOINT DE **GET ALL EXERCISES BY BODY_PART ID** 
 
