@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS spotter;
+
+USE spotter;
+
 CREATE TABLE IF NOT EXISTS exercise(
     id bigint NOT NULL,
     name varchar(60) NOT NULL,
@@ -8,6 +12,28 @@ CREATE TABLE IF NOT EXISTS exercise(
 
 ALTER TABLE exercise ADD PRIMARY KEY (id);
 ALTER TABLE exercise MODIFY id bigint NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE IF NOT EXISTS body_part(
+    id bigint NOT NULL,
+    name varchar(45) NOT NULL
+);
+
+ALTER TABLE body_part ADD PRIMARY KEY (id);
+ALTER TABLE body_part MODIFY id bigint NOT NULL AUTO_INCREMENT;
+ALTER TABLE body_part ADD UNIQUE INDEX uq_body_part_name (name ASC) VISIBLE;
+
+ CREATE TABLE IF NOT EXISTS exercise_body_part(
+    exercise_id bigint NOT NULL,
+    body_part_id bigint NOT NULL
+);
+
+ALTER TABLE exercise_body_part ADD PRIMARY KEY(exercise_id,body_part_id);
+
+ALTER TABLE exercise_body_part ADD CONSTRAINT fk_exercise_body_part_exercise_id
+FOREIGN KEY (exercise_id) REFERENCES exercise(id);
+ALTER TABLE exercise_body_part ADD CONSTRAINT fk_exercise_body_part_id
+FOREIGN KEY (body_part_id) REFERENCES body_part(id);
+
 
 CREATE TABLE IF NOT EXISTS workout(
     id bigint NOT NULL,
