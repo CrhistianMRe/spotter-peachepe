@@ -23,9 +23,7 @@ $stmt = $pdo->prepare("
     WHERE workout.id = :id
 ");
 
-$stmt->execute([
-    ':id' => $workout_id
-]);
+$stmt->execute([':id' => $workout_id]);
 
 $workout = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -86,9 +84,7 @@ $stmt = $pdo->prepare("
     ORDER BY id
 ");
 
-$stmt->execute([
-    ':workout_id' => $workout_id
-]);
+$stmt->execute([':workout_id' => $workout_id]);
 
 $sets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -96,146 +92,80 @@ require_once '../private/templates/header.php';
 
 ?>
 
-<h1>
+<a href="workouts.php" class="back-link">Back to Workout History</a>
 
-Workout Sets
-
-</h1>
-
-<p>
-
-Workout:
-
-<strong>
-
-<?= escape($workout['exercise_name']) ?>
-
-</strong>
-
-on
-
-<?= escape($workout['workout_date']) ?>
-
-</p>
-
-<p>
-    <a href="workouts.php">
-        Back to Workouts
-    </a>
-</p>
-
-<?php if (!empty($errors)): ?>
-
-    <ul>
-
-        <?php foreach ($errors as $error): ?>
-
-            <li><?= escape($error) ?></li>
-
-        <?php endforeach; ?>
-
-    </ul>
-
-<?php endif; ?>
+<div class="page-header">
+    <h1><?= escape($workout['exercise_name']) ?></h1>
+    <span style="color: var(--text-muted); font-size: 0.9rem;"><?= escape($workout['workout_date']) ?></span>
+</div>
 
 <h2>Add Set</h2>
 
-<form method="POST">
-
-    <p>
-
-        <label>
-            Reps
-        </label>
-
-        <br>
-
-        <input
-            type="number"
-            name="rep_amount"
-        >
-
-    </p>
-
-    <p>
-
-        <label>
-            Weight
-        </label>
-
-        <br>
-
-        <input
-            type="number"
-            step="0.01"
-            name="weight_amount"
-        >
-
-    </p>
-
-    <p>
-
-        <label>
-            To Failure
-        </label>
-
-        <br>
-
-        <select name="to_failure">
-
-            <option value="0">
-                No
-            </option>
-
-            <option value="1">
-                Yes
-            </option>
-
-        </select>
-
-    </p>
-
-    <button type="submit">
-        Add Set
-    </button>
-
-</form>
-
-<h2>Existing Sets</h2>
-
-<table border="1" cellpadding="5">
-
-    <tr>
-        <th>ID</th>
-        <th>Reps</th>
-        <th>Weight</th>
-        <th>To Failure</th>
-    </tr>
-
-    <?php foreach ($sets as $set): ?>
-
-    <tr>
-
-        <td>
-            <?= $set['id'] ?>
-        </td>
-
-        <td>
-            <?= escape($set['rep_amount']) ?>
-        </td>
-
-        <td>
-            <?= escape($set['weight_amount']) ?>
-        </td>
-
-        <td>
-            <?= $set['to_failure'] ? 'Yes' : 'No' ?>
-        </td>
-
-    </tr>
-
+<?php if (!empty($errors)): ?>
+<ul class="error-list">
+    <?php foreach ($errors as $error): ?>
+    <li><?= escape($error) ?></li>
     <?php endforeach; ?>
+</ul>
+<?php endif; ?>
 
-</table>
+<div class="form-card">
+    <form method="POST">
+
+        <div class="form-group">
+            <label for="rep_amount">Reps</label>
+            <input type="number" id="rep_amount" name="rep_amount" min="1">
+        </div>
+
+        <div class="form-group">
+            <label for="weight_amount">Weight (kg)</label>
+            <input type="number" id="weight_amount" name="weight_amount" step="0.01" min="0">
+        </div>
+
+        <div class="form-group">
+            <label for="to_failure">To Failure</label>
+            <select id="to_failure" name="to_failure">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Add Set</button>
+        </div>
+
+    </form>
+</div>
+
+<h2>Sets</h2>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Reps</th>
+                <th>Weight</th>
+                <th>To Failure</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($sets as $i => $set): ?>
+            <tr>
+                <td><?= $i + 1 ?></td>
+                <td><?= escape($set['rep_amount']) ?></td>
+                <td><?= escape($set['weight_amount']) ?> kg</td>
+                <td>
+                    <?php if ($set['to_failure']): ?>
+                        <span class="badge badge-yes">Yes</span>
+                    <?php else: ?>
+                        <span class="badge badge-no">No</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>

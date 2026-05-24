@@ -33,27 +33,32 @@ require_once '../private/templates/header.php';
 
 ?>
 
+<a href="body_parts.php" class="back-link">Back to Body Parts</a>
+
 <h1>Create Body Part</h1>
 
-<p>
-    <a href="body_parts.php">Back to Body Parts</a>
-</p>
-
 <?php if (!empty($errors)): ?>
-<ul>
+<ul class="error-list">
     <?php foreach ($errors as $error): ?>
     <li><?= escape($error) ?></li>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
 
-<form method="POST">
-    <p>
-        <label>Body Part Name</label>
-        <br>
-        <input type="text" name="name" value="<?= escape($name) ?>">
-    </p>
-    <button type="submit">Create Body Part</button>
-</form>
+<div class="form-card">
+    <form method="POST">
+
+        <div class="form-group">
+            <label for="name">Body Part Name</label>
+            <input type="text" id="name" name="name" value="<?= escape($name) ?>">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Body Part</button>
+            <a href="body_parts.php" class="btn btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>

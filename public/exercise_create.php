@@ -58,96 +58,50 @@ require_once '../private/templates/header.php';
 
 ?>
 
+<a href="exercises.php" class="back-link">Back to Exercise Library</a>
+
 <h1>Create Exercise</h1>
 
-<p>
-    <a href="exercises.php">
-        Back to Exercise Library
-    </a>
-</p>
-
 <?php if (!empty($errors)): ?>
-
-    <ul>
-
-        <?php foreach ($errors as $error): ?>
-
-            <li><?= escape($error) ?></li>
-
-        <?php endforeach; ?>
-
-    </ul>
-
+<ul class="error-list">
+    <?php foreach ($errors as $error): ?>
+    <li><?= escape($error) ?></li>
+    <?php endforeach; ?>
+</ul>
 <?php endif; ?>
 
-<form method="POST">
+<div class="form-card">
+    <form method="POST">
 
-    <p>
-        <label>
-            Exercise Name
-        </label>
+        <div class="form-group">
+            <label for="name">Exercise Name</label>
+            <input type="text" id="name" name="name" value="<?= escape($name) ?>">
+        </div>
 
-        <br>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description"><?= escape($description) ?></textarea>
+        </div>
 
-        <input
-            type="text"
-            name="name"
-            value="<?= escape($name) ?>"
-        >
-    </p>
+        <div class="form-group">
+            <label for="image_url">Image URL</label>
+            <input type="text" id="image_url" name="image_url" value="<?= escape($image_url) ?>">
+        </div>
 
-    <p>
-        <label>
-            Description
-        </label>
+        <div class="form-group">
+            <label for="weight_required">Weight Required</label>
+            <select id="weight_required" name="weight_required">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
 
-        <br>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Exercise</button>
+            <a href="exercises.php" class="btn btn-secondary">Cancel</a>
+        </div>
 
-        <textarea
-            name="description"
-        ><?= escape($description) ?></textarea>
-    </p>
-
-    <p>
-        <label>
-            Image URL
-        </label>
-
-        <br>
-
-        <input
-            type="text"
-            name="image_url"
-            value="<?= escape($image_url) ?>"
-        >
-    </p>
-
-    <p>
-
-        <label>
-            Weight Required
-        </label>
-
-        <br>
-
-        <select name="weight_required">
-
-            <option value="0">
-                No
-            </option>
-
-            <option value="1">
-                Yes
-            </option>
-
-        </select>
-
-    </p>
-
-    <button type="submit">
-        Create Exercise
-    </button>
-
-</form>
+    </form>
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>
