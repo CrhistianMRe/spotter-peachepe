@@ -21,6 +21,8 @@
 
     <a href="workouts.php">Workouts</a>
 
+    <a href="body_parts.php">Body Parts</a>
+
 </nav>
 
 <hr>
