@@ -84,38 +84,86 @@ require_once '../private/templates/header.php';
     <form method="POST">
         <div class="form-group">
             <label for="body_part_id">Body Part</label>
+
             <select id="body_part_id" name="body_part_id">
-                <option value="">Select Body Part</option>
+
+                <option value="">
+                    Select Body Part
+                </option>
+
                 <?php foreach ($body_parts as $body_part): ?>
-                <option value="<?= $body_part['id'] ?>"><?= escape($body_part['name']) ?></option>
+
+                <option value="<?= $body_part['id'] ?>">
+
+                    <?= escape($body_part['name']) ?>
+
+                </option>
+
                 <?php endforeach; ?>
+
             </select>
+
         </div>
+
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Assign Body Part</button>
+
+            <button type="submit" class="btn btn-primary">
+                Assign Body Part
+            </button>
+
         </div>
+
     </form>
 </div>
 
 <h2>Assigned Body Parts</h2>
 
 <div class="table-wrap">
+
     <table>
+
         <thead>
+
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Actions</th>
             </tr>
+
         </thead>
+
         <tbody>
+
             <?php foreach ($assigned_body_parts as $body_part): ?>
+
             <tr>
-                <td><?= $body_part['id'] ?></td>
-                <td><?= escape($body_part['name']) ?></td>
+
+                <td>
+                    <?= $body_part['id'] ?>
+                </td>
+
+                <td>
+                    <?= escape($body_part['name']) ?>
+                </td>
+
+                <td>
+
+                    <a href="exercise_body_part_delete.php?exercise_id=<?= $exercise_id ?>&body_part_id=<?= $body_part['id'] ?>">
+
+                        Remove
+
+                    </a>
+
+                </td>
+
             </tr>
+
             <?php endforeach; ?>
+
         </tbody>
+
     </table>
+
 </div>
 
 <?php require_once '../private/templates/footer.php'; ?>

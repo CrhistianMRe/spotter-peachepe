@@ -15,28 +15,50 @@ require_once '../private/templates/header.php';
 
 ?>
 
-<div class="page-header">
-    <h1>Body Parts</h1>
-    <a href="body_part_create.php" class="btn btn-primary">+ Add Body Part</a>
-</div>
+<h1>Body Parts</h1>
 
-<div class="table-wrap">
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($body_parts as $body_part): ?>
-            <tr>
-                <td><?= $body_part['id'] ?></td>
-                <td><?= escape($body_part['name']) ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+<p>
+    <a href="body_part_create.php">
+        Add Body Part
+    </a>
+</p>
+
+<table border="1" cellpadding="5">
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Exercises</th>
+    </tr>
+
+    <?php foreach ($body_parts as $body_part): ?>
+
+    <tr>
+
+        <td>
+            <?= $body_part['id'] ?>
+        </td>
+
+        <td>
+            <?= escape($body_part['name']) ?>
+        </td>
+
+        <td>
+
+            <a href="
+                body_part_exercises.php?body_part_id=<?= $body_part['id'] ?>
+            ">
+
+                View Exercises
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    <?php endforeach; ?>
+
+</table>
 
 <?php require_once '../private/templates/footer.php'; ?>

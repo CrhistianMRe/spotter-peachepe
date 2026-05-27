@@ -13,7 +13,8 @@
 <nav>
     <a href="index.php" class="nav-brand">Spotter</a>
     <div class="nav-links">
-        <a href="exercises.php">Exercises</a>
+        <a href="dashboard.php">Dashboard</a>
+	<a href="exercises.php">Exercises</a>
         <a href="workouts.php">Workouts</a>
         <a href="body_parts.php">Body Parts</a>
     </div>
