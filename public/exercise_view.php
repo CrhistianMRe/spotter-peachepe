@@ -72,109 +72,72 @@ require_once '../private/templates/header.php';
 <h1><?= escape($exercise['name']) ?></h1>
 
 <div class="table-wrap">
-
-    <table>
-
-        <tr>
-            <th>Description</th>
-
-            <td>
-
-                <?= escape($exercise['description'] ?? 'No description') ?>
-
-            </td>
-        </tr>
-
-        <tr>
-            <th>Weight Required</th>
-
-            <td>
-
-                <?= $exercise['weight_required'] ? 'Yes' : 'No' ?>
-
-            </td>
-        </tr>
-
-        <tr>
-            <th>Total Workouts</th>
-
-            <td>
-
-                <?= $total_workouts ?>
-
-            </td>
-        </tr>
-
+    <table class="detail-table">
+        <tbody>
+            <tr>
+                <th>Description</th>
+                <td><?= escape($exercise['description'] ?? 'No description') ?></td>
+            </tr>
+            <tr>
+                <th>Weight Required</th>
+                <td>
+                    <?php if ($exercise['weight_required']): ?>
+                        <span class="badge badge-yes">Yes</span>
+                    <?php else: ?>
+                        <span class="badge badge-no">No</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Total Workouts</th>
+                <td><?= $total_workouts ?></td>
+            </tr>
+        </tbody>
     </table>
-
 </div>
 
 <h2>Body Parts</h2>
 
 <div class="table-wrap">
-
     <table>
-
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-        </tr>
-
-        <?php foreach ($body_parts as $body_part): ?>
-
-        <tr>
-
-            <td>
-                <?= $body_part['id'] ?>
-            </td>
-
-            <td>
-                <?= escape($body_part['name']) ?>
-            </td>
-
-        </tr>
-
-        <?php endforeach; ?>
-
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($body_parts as $body_part): ?>
+            <tr>
+                <td><?= $body_part['id'] ?></td>
+                <td><?= escape($body_part['name']) ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-
 </div>
 
 <h2>Workout History</h2>
 
 <div class="table-wrap">
-
     <table>
-
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Length</th>
-        </tr>
-
-        <?php foreach ($workouts as $workout): ?>
-
-        <tr>
-
-            <td>
-                <?= $workout['id'] ?>
-            </td>
-
-            <td>
-                <?= escape($workout['workout_date']) ?>
-            </td>
-
-            <td>
-                <?= escape($workout['workout_length']) ?>
-                minutes
-            </td>
-
-        </tr>
-
-        <?php endforeach; ?>
-
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($workouts as $workout): ?>
+            <tr>
+                <td><?= $workout['id'] ?></td>
+                <td><?= escape($workout['workout_date']) ?></td>
+                <td><?= escape($workout['workout_length']) ?> minutes</td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-
 </div>
 
 <?php require_once '../private/templates/footer.php'; ?>

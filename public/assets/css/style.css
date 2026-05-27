@@ -435,6 +435,79 @@ tbody tr:hover td {
     flex-wrap: wrap;
 }
 
+/* ===== DETAIL TABLE (key-value rows, no thead) ===== */
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+}
+
+.detail-table tr:last-child td,
+.detail-table tr:last-child th {
+    border-bottom: none;
+}
+
+.detail-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
+    white-space: nowrap;
+    width: 220px;
+    vertical-align: top;
+}
+
+.detail-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.filter-bar label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.filter-bar select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 0.55rem 2.2rem 0.55rem 0.75rem;
+    font-size: 0.875rem;
+    font-family: inherit;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    transition: border-color 0.15s;
+}
+
+.filter-bar select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.1);
+}
+
 /* ===== FOOTER ===== */
 footer {
     text-align: center;

@@ -16,9 +16,7 @@ $stmt = $pdo->prepare("
     WHERE id = :id
 ");
 
-$stmt->execute([
-    ':id' => $body_part_id
-]);
+$stmt->execute([':id' => $body_part_id]);
 
 $body_part = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -38,9 +36,7 @@ $stmt = $pdo->prepare("
     ORDER BY exercise.name
 ");
 
-$stmt->execute([
-    ':body_part_id' => $body_part_id
-]);
+$stmt->execute([':body_part_id' => $body_part_id]);
 
 $exercises = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -48,48 +44,35 @@ require_once '../private/templates/header.php';
 
 ?>
 
-<h1>
+<a href="body_parts.php" class="back-link">Back to Body Parts</a>
 
-Exercises for
+<h1>Exercises — <?= escape($body_part['name']) ?></h1>
 
-<?= escape($body_part['name']) ?>
-
-</h1>
-
-<p>
-    <a href="body_parts.php">
-        Back to Body Parts
-    </a>
-</p>
-
-<table border="1" cellpadding="5">
-
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Weight Required</th>
-    </tr>
-
-    <?php foreach ($exercises as $exercise): ?>
-
-    <tr>
-
-        <td>
-            <?= $exercise['id'] ?>
-        </td>
-
-        <td>
-            <?= escape($exercise['name']) ?>
-        </td>
-
-        <td>
-            <?= $exercise['weight_required'] ? 'Yes' : 'No' ?>
-        </td>
-
-    </tr>
-
-    <?php endforeach; ?>
-
-</table>
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Weight Required</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($exercises as $exercise): ?>
+            <tr>
+                <td><?= $exercise['id'] ?></td>
+                <td><?= escape($exercise['name']) ?></td>
+                <td>
+                    <?php if ($exercise['weight_required']): ?>
+                        <span class="badge badge-yes">Yes</span>
+                    <?php else: ?>
+                        <span class="badge badge-no">No</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>
