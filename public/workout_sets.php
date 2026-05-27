@@ -6,32 +6,32 @@ require_once '../private/validation.php';
 
 $errors = [];
 
-$set_id = $_GET['set_id'] ?? null;
+$workout_id = $_GET['workout_id'] ?? null;
 
-if (!is_positive_integer($set_id)) {
-    die('Invalid set ID.');
+if (!is_positive_integer($workout_id)) {
+    die('Invalid workout ID.');
 }
 
 $stmt = $pdo->prepare("
-    SELECT *
-    FROM workout_set
-    WHERE id = :id
+    SELECT
+        workout.id,
+        workout.workout_date,
+        exercise.name AS exercise_name
+    FROM workout
+    JOIN exercise
+        ON workout.exercise_id = exercise.id
+    WHERE workout.id = :id
 ");
 
 $stmt->execute([
-    ':id' => $set_id
+    ':id' => $workout_id
 ]);
 
-$set = $stmt->fetch(PDO::FETCH_ASSOC);
+$workout = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$set) {
-    die('Workout set not found.');
+if (!$workout) {
+    die('Workout not found.');
 }
-
-$rep_amount = $set['rep_amount'];
-$weight_amount = $set['weight_amount'];
-$to_failure = $set['to_failure'];
-$workout_id = $set['workout_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -54,34 +54,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
 
         $stmt = $pdo->prepare("
-            UPDATE workout_set
-            SET
-                rep_amount = :rep_amount,
-                weight_amount = :weight_amount,
-                to_failure = :to_failure
-            WHERE id = :id
+            INSERT INTO workout_set (
+                rep_amount,
+                weight_amount,
+                to_failure,
+                workout_id
+            )
+            VALUES (
+                :rep_amount,
+                :weight_amount,
+                :to_failure,
+                :workout_id
+            )
         ");
 
         $stmt->execute([
             ':rep_amount' => $rep_amount,
             ':weight_amount' => $weight_amount,
             ':to_failure' => $to_failure,
-            ':id' => $set_id
+            ':workout_id' => $workout_id
         ]);
 
         redirect("workout_sets.php?workout_id=$workout_id");
     }
 }
 
+$stmt = $pdo->prepare("
+    SELECT *
+    FROM workout_set
+    WHERE workout_id = :workout_id
+    ORDER BY id
+");
+
+$stmt->execute([
+    ':workout_id' => $workout_id
+]);
+
+$sets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 require_once '../private/templates/header.php';
 
 ?>
 
-<a href="workout_sets.php?workout_id=<?= $workout_id ?>" class="back-link">
-    Back to Workout Sets
+<a href="workouts.php" class="back-link">
+    Back to Workout History
 </a>
 
-<h1>Edit Workout Set</h1>
+<div class="page-header">
+
+    <h1>
+
+        <?= escape($workout['exercise_name']) ?>
+
+    </h1>
+
+    <span style="color: var(--text-muted); font-size: 0.9rem;">
+
+        <?= escape($workout['workout_date']) ?>
+
+    </span>
+
+</div>
+
+<h2>Add Set</h2>
 
 <?php if (!empty($errors)): ?>
 
@@ -99,76 +134,162 @@ require_once '../private/templates/header.php';
 
 <div class="form-card">
 
-<form method="POST">
+    <form method="POST">
 
-    <div class="form-group">
+        <div class="form-group">
 
-        <label for="rep_amount">
-            Reps
-        </label>
+            <label for="rep_amount">
+                Reps
+            </label>
 
-        <input
-            type="number"
-            id="rep_amount"
-            name="rep_amount"
-            value="<?= escape($rep_amount) ?>"
-            min="1"
-        >
-
-    </div>
-
-    <div class="form-group">
-
-        <label for="weight_amount">
-            Weight (kg)
-        </label>
-
-        <input
-            type="number"
-            id="weight_amount"
-            name="weight_amount"
-            value="<?= escape($weight_amount) ?>"
-            step="0.01"
-            min="0"
-        >
-
-    </div>
-
-    <div class="form-group">
-
-        <label for="to_failure">
-            To Failure
-        </label>
-
-        <select id="to_failure" name="to_failure">
-
-            <option
-                value="0"
-                <?= !$to_failure ? 'selected' : '' ?>
+            <input
+                type="number"
+                id="rep_amount"
+                name="rep_amount"
+                min="1"
+                required
             >
-                No
-            </option>
 
-            <option
-                value="1"
-                <?= $to_failure ? 'selected' : '' ?>
+        </div>
+
+        <div class="form-group">
+
+            <label for="weight_amount">
+                Weight (kg)
+            </label>
+
+            <input
+                type="number"
+                id="weight_amount"
+                name="weight_amount"
+                step="0.01"
+                min="0"
+                required
             >
-                Yes
-            </option>
 
-        </select>
+        </div>
 
-    </div>
+        <div class="form-group">
 
-    <div class="form-actions">
+            <label for="to_failure">
+                To Failure
+            </label>
 
-        <button type="submit" class="btn btn-primary">
-            Save Changes
-        </button>
+            <select id="to_failure" name="to_failure">
 
-    </div>
+                <option value="0">
+                    No
+                </option>
 
-</form>
+                <option value="1">
+                    Yes
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn btn-primary">
+
+                Add Set
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<h2>Sets</h2>
+
+<div class="table-wrap">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>#</th>
+                <th>Reps</th>
+                <th>Weight</th>
+                <th>To Failure</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <?php foreach ($sets as $i => $set): ?>
+
+            <tr>
+
+                <td>
+                    <?= $i + 1 ?>
+                </td>
+
+                <td>
+                    <?= escape($set['rep_amount']) ?>
+                </td>
+
+                <td>
+                    <?= escape($set['weight_amount']) ?> kg
+                </td>
+
+                <td>
+
+                    <?php if ($set['to_failure']): ?>
+
+                        <span class="badge badge-yes">
+                            Yes
+                        </span>
+
+                    <?php else: ?>
+
+                        <span class="badge badge-no">
+                            No
+                        </span>
+
+                    <?php endif; ?>
+
+                </td>
+
+                <td>
+
+                    <div class="actions">
+
+                        <a
+                            href="workout_set_edit.php?set_id=<?= $set['id'] ?>"
+                            class="action-link edit"
+                        >
+
+                            Edit
+
+                        </a>
+
+                        <a
+                            href="workout_set_delete.php?set_id=<?= $set['id'] ?>&workout_id=<?= $workout_id ?>"
+                            class="action-link delete"
+                        >
+
+                            Delete
+
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            <?php endforeach; ?>
+
+        </tbody>
+
+    </table>
 
 </div>
 

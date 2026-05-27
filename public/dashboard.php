@@ -38,6 +38,30 @@ $stmt = $pdo->query("
 
 $most_used_exercise = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$stmt = $pdo->query("
+    SELECT
+        body_part.name,
+        COUNT(workout.id) AS workout_count
+    FROM workout
+    JOIN exercise
+        ON workout.exercise_id = exercise.id
+    JOIN exercise_body_part
+        ON exercise.id = exercise_body_part.exercise_id
+    JOIN body_part
+        ON exercise_body_part.body_part_id = body_part.id
+    GROUP BY body_part.id
+    ORDER BY workout_count DESC
+    LIMIT 1
+");
+
+$most_trained_body_part = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$total_weight_lifted = $pdo->query("
+    SELECT
+        SUM(rep_amount * weight_amount)
+    FROM workout_set
+")->fetchColumn();
+
 require_once '../private/templates/header.php';
 
 ?>
@@ -80,6 +104,26 @@ require_once '../private/templates/header.php';
                     <?php endif; ?>
                 </td>
             </tr>
+
+	    <tr>
+		 <th>Most Trained Body Part</th>
+	 	 <td>
+                      <?php if ($most_trained_body_part): ?>
+                         <?= escape($most_trained_body_part['name']) ?>
+                         <span style="color: var(--text-muted); font-size: 0.8rem;">
+                             (<?= $most_trained_body_part['workout_count'] ?> workouts)
+			</span>
+                      <?php else: ?>
+                        <span style="color: var(--text-muted);">No workout data</span>
+                      <?php endif; ?>
+		  </td>
+             </tr>
+
+            <tr>
+                <th>Total Weight Lifted</th>
+                <td><?= round($total_weight_lifted ?? 0, 2) ?> kg</td>
+             </tr>
+
         </tbody>
     </table>
 </div>
