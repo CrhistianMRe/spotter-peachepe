@@ -9,7 +9,8 @@ $errors = [];
 $id = $_GET['id'] ?? null;
 
 if (!is_positive_integer($id)) {
-    die('Invalid exercise ID.');
+    require_once '../private/error.php';
+    render_error('Invalid exercise ID.');
 }
 
 $stmt = $pdo->prepare("
@@ -25,7 +26,8 @@ $stmt->execute([
 $exercise = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$exercise) {
-    die('Exercise not found.');
+    require_once '../private/error.php';
+    render_error('Exercise not found.');
 }
 
 $name = $exercise['name'];

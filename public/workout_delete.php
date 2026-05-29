@@ -7,7 +7,8 @@ require_once '../private/validation.php';
 $id = $_GET['id'] ?? null;
 
 if (!is_positive_integer($id)) {
-    die('Invalid workout ID.');
+    require_once '../private/error.php';
+    render_error('Invalid workout ID.');
 }
 
 $stmt = $pdo->prepare("
@@ -27,7 +28,8 @@ $stmt->execute([
 $workout = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$workout) {
-    die('Workout not found.');
+    require_once '../private/error.php';
+    render_error('Workout not found.');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
