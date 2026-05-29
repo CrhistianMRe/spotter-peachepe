@@ -64,94 +64,47 @@ require_once '../private/templates/header.php';
 
 ?>
 
+<a href="workouts.php" class="back-link">Back to Workout History</a>
+
 <h1>Create Workout</h1>
 
-<p>
-    <a href="workouts.php">
-        Back to Workout History
-    </a>
-</p>
-
 <?php if (!empty($errors)): ?>
-
-    <ul>
-
-        <?php foreach ($errors as $error): ?>
-
-            <li><?= escape($error) ?></li>
-
-        <?php endforeach; ?>
-
-    </ul>
-
+<ul class="error-list">
+    <?php foreach ($errors as $error): ?>
+    <li><?= escape($error) ?></li>
+    <?php endforeach; ?>
+</ul>
 <?php endif; ?>
 
-<form method="POST">
+<div class="form-card">
+    <form method="POST">
 
-    <p>
+        <div class="form-group">
+            <label for="exercise_id">Exercise</label>
+            <select id="exercise_id" name="exercise_id">
+                <option value="">Select Exercise</option>
+                <?php foreach ($exercises as $exercise): ?>
+                <option value="<?= $exercise['id'] ?>"><?= escape($exercise['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-        <label>
-            Exercise
-        </label>
+        <div class="form-group">
+            <label for="workout_date">Date</label>
+            <input type="date" id="workout_date" name="workout_date" value="<?= escape($date) ?>">
+        </div>
 
-        <br>
+        <div class="form-group">
+            <label for="workout_length">Length (minutes)</label>
+            <input type="number" id="workout_length" name="workout_length" value="<?= escape($length) ?>">
+        </div>
 
-        <select name="exercise_id">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Workout</button>
+            <a href="workouts.php" class="btn btn-secondary">Cancel</a>
+        </div>
 
-            <option value="">
-                Select Exercise
-            </option>
-
-            <?php foreach ($exercises as $exercise): ?>
-
-                <option value="<?= $exercise['id'] ?>">
-
-                    <?= escape($exercise['name']) ?>
-
-                </option>
-
-            <?php endforeach; ?>
-
-        </select>
-
-    </p>
-
-    <p>
-
-        <label>
-            Workout Date
-        </label>
-
-        <br>
-
-        <input
-            type="date"
-            name="workout_date"
-            value="<?= escape($date) ?>"
-        >
-
-    </p>
-
-    <p>
-
-        <label>
-            Workout Length (minutes)
-        </label>
-
-        <br>
-
-        <input
-            type="number"
-            name="workout_length"
-            value="<?= escape($length) ?>"
-        >
-
-    </p>
-
-    <button type="submit">
-        Create Workout
-    </button>
-
-</form>
+    </form>
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>

@@ -1,4 +1,4 @@
-<hr>
+</main>
 
 <footer>
     Spotter Workout Log

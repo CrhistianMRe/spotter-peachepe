@@ -6,7 +6,7 @@ $password = '12345678';
 
 try {
     $pdo = new PDO(
-        "mysql:unix-socket=/run/mysql/mysqld.sock;dbname=$dbname;charset=utf8mb4",
+        "mysql:host=127.0.0.1;port=3306;dbname=$dbname;charset=utf8mb4",
         $username,
         $password
     );

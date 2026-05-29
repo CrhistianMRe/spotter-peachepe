@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             redirect("exercise_body_part.php?exercise_id=$exercise_id");
         } catch (PDOException $e) {
-            $errors[] = 'Relationship already exists.';
+            $errors[] = 'This body part is already assigned to the exercise.';
         }
     }
 }
@@ -68,51 +68,104 @@ require_once '../private/templates/header.php';
 
 ?>
 
-<h1>Exercise Body Parts</h1>
+<a href="exercises.php" class="back-link">Back to Exercise Library</a>
 
-<p>Exercise: <strong><?= escape($exercise['name']) ?></strong></p>
+<h1><?= escape($exercise['name']) ?></h1>
 
-<p>
-    <a href="exercises.php">Back to Exercises</a>
-</p>
+<h2>Assign Body Part</h2>
 
 <?php if (!empty($errors)): ?>
-<ul>
+<ul class="error-list">
     <?php foreach ($errors as $error): ?>
     <li><?= escape($error) ?></li>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
 
-<h2>Assign Body Part</h2>
+<div class="form-card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="body_part_id">Body Part</label>
 
-<form method="POST">
-    <p>
-        <label>Body Part</label>
-        <br>
-        <select name="body_part_id">
-            <option value="">Select Body Part</option>
-            <?php foreach ($body_parts as $body_part): ?>
-            <option value="<?= $body_part['id'] ?>"><?= escape($body_part['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
-    </p>
-    <button type="submit">Assign Body Part</button>
-</form>
+            <select id="body_part_id" name="body_part_id">
+
+                <option value="">
+                    Select Body Part
+                </option>
+
+                <?php foreach ($body_parts as $body_part): ?>
+
+                <option value="<?= $body_part['id'] ?>">
+
+                    <?= escape($body_part['name']) ?>
+
+                </option>
+
+                <?php endforeach; ?>
+
+            </select>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn btn-primary">
+                Assign Body Part
+            </button>
+
+        </div>
+
+    </form>
+</div>
 
 <h2>Assigned Body Parts</h2>
 
-<table border="1" cellpadding="5">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-    </tr>
-    <?php foreach ($assigned_body_parts as $body_part): ?>
-    <tr>
-        <td><?= $body_part['id'] ?></td>
-        <td><?= escape($body_part['name']) ?></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<div class="table-wrap">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <?php foreach ($assigned_body_parts as $body_part): ?>
+
+            <tr>
+
+                <td>
+                    <?= $body_part['id'] ?>
+                </td>
+
+                <td>
+                    <?= escape($body_part['name']) ?>
+                </td>
+
+                <td>
+
+                    <a href="exercise_body_part_delete.php?exercise_id=<?= $exercise_id ?>&body_part_id=<?= $body_part['id'] ?>">
+
+                        Remove
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            <?php endforeach; ?>
+
+        </tbody>
+
+    </table>
+
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>

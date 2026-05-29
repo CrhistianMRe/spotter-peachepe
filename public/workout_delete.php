@@ -21,9 +21,7 @@ $stmt = $pdo->prepare("
     WHERE workout.id = :id
 ");
 
-$stmt->execute([
-    ':id' => $id
-]);
+$stmt->execute([':id' => $id]);
 
 $workout = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -39,18 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         WHERE workout_id = :id
     ");
 
-    $stmt->execute([
-        ':id' => $id
-    ]);
+    $stmt->execute([':id' => $id]);
 
     $stmt = $pdo->prepare("
         DELETE FROM workout
         WHERE id = :id
     ");
 
-    $stmt->execute([
-        ':id' => $id
-    ]);
+    $stmt->execute([':id' => $id]);
 
     redirect('workouts.php');
 }
@@ -59,38 +53,26 @@ require_once '../private/templates/header.php';
 
 ?>
 
+<a href="workouts.php" class="back-link">Back to Workout History</a>
+
 <h1>Delete Workout</h1>
 
-<p>
-    <a href="workouts.php">
-        Back to Workout History
-    </a>
-</p>
+<div class="confirm-card">
 
-<p>
+    <p class="confirm-message">
+        Are you sure you want to delete the workout
+        <strong><?= escape($workout['exercise_name']) ?></strong>
+        on <?= escape($workout['workout_date']) ?>?
+        All sets will also be deleted.
+    </p>
 
-Are you sure you want to delete:
+    <form method="POST">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Delete Workout</button>
+            <a href="workouts.php" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
 
-<strong>
-
-<?= escape($workout['exercise_name']) ?>
-
-</strong>
-
-on
-
-<?= escape($workout['workout_date']) ?>
-
-?
-
-</p>
-
-<form method="POST">
-
-    <button type="submit">
-        Delete Workout
-    </button>
-
-</form>
+</div>
 
 <?php require_once '../private/templates/footer.php'; ?>
