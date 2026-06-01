@@ -13,6 +13,7 @@ if (!is_positive_integer($workout_id)) {
     render_error('Invalid workout ID.');
 }
 
+
 $stmt = $pdo->prepare("
     SELECT
         workout.id,
@@ -41,13 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $weight_amount = $_POST['weight_amount'] ?? '';
     $to_failure = $_POST['to_failure'] ?? '0';
 
-    if (!is_positive_integer($rep_amount)) {
-        $errors[] = 'Reps must be a positive integer.';
-    }
+if (!is_positive_integer($rep_amount)) {
+    $errors[] = 'Reps must be a positive integer.';
+} elseif ($rep_amount > 254) {
+    $errors[] = 'Reps cannot exceed 254.';
+}
 
-    if (!is_non_negative_number($weight_amount)) {
-        $errors[] = 'Weight must be non-negative.';
-    }
+if (!is_non_negative_number($weight_amount)) {
+    $errors[] = 'Weight must be non-negative.';
+} elseif ($weight_amount > 999.98) {
+    $errors[] = 'Weight cannot exceed 999.98 kg.';
+}
 
     if (!is_valid_boolean($to_failure)) {
         $errors[] = 'Invalid failure value.';

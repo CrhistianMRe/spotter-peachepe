@@ -9,7 +9,8 @@ $errors = [];
 $set_id = $_GET['set_id'] ?? null;
 
 if (!is_positive_integer($set_id)) {
-    die('Invalid set ID.');
+    require_once '../private/error.php';
+    render_error('Invalid set ID.');
 }
 
 $stmt = $pdo->prepare("
@@ -25,7 +26,8 @@ $stmt->execute([
 $set = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$set) {
-    die('Workout set not found.');
+    require_once '../private/error.php';
+    render_error('Workout set not found.');
 }
 
 $rep_amount = $set['rep_amount'];
@@ -41,10 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!is_positive_integer($rep_amount)) {
         $errors[] = 'Reps must be a positive integer.';
+    } elseif ($rep_amount > 255) {
+        $errors[] = 'Reps cannot exceed 255.';
     }
 
     if (!is_non_negative_number($weight_amount)) {
         $errors[] = 'Weight must be non-negative.';
+    } elseif ($weight_amount > 999.99) {
+        $errors[] = 'Weight cannot exceed 999.99 kg.';
     }
 
     if (!is_valid_boolean($to_failure)) {
@@ -113,6 +119,8 @@ require_once '../private/templates/header.php';
             name="rep_amount"
             value="<?= escape($rep_amount) ?>"
             min="1"
+            max="255"
+            required
         >
 
     </div>
@@ -130,6 +138,8 @@ require_once '../private/templates/header.php';
             value="<?= escape($weight_amount) ?>"
             step="0.01"
             min="0"
+            max="999.99"
+            required
         >
 
     </div>
