@@ -508,6 +508,145 @@ tbody tr:hover td {
     box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.1);
 }
 
+/* ===== MEMBER GRID ===== */
+.member-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.member-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    display: block;
+    color: var(--text);
+    transition: border-color 0.15s, transform 0.15s;
+}
+
+.member-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.member-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    letter-spacing: 0;
+}
+
+.member-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+    color: var(--text);
+}
+
+.member-id {
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-family: monospace;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+}
+
+.member-dept {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+/* ===== PROFILE PAGE ===== */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.profile-avatar-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-info h1 {
+    margin-bottom: 0.4rem;
+}
+
+.profile-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.profile-meta span {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.profile-meta .meta-id {
+    color: var(--accent);
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.profile-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.profile-section h2 {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-muted);
+}
+
+.profile-section p {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.profile-section p.placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
 /* ===== FOOTER ===== */
 footer {
     text-align: center;

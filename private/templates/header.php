@@ -17,6 +17,7 @@
 	<a href="exercises.php">Exercises</a>
         <a href="workouts.php">Workouts</a>
         <a href="body_parts.php">Body Parts</a>
+        <a href="members.php">Members</a>
     </div>
 </nav>
 
